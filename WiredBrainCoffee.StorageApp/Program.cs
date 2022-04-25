@@ -10,15 +10,11 @@ AddManagers(employeeRepository);
 GetEmployeeById(employeeRepository);
 WriteAllToConsole(employeeRepository);
 
-
 var organisationRepository = new ListRepository<Organisation>();
 AddOrganisations(organisationRepository);
 WriteAllToConsole(organisationRepository);
 
-
 Console.ReadLine();
-
-
 
 static void WriteAllToConsole(IReadRepository<IEntity> repository)
 {
@@ -33,24 +29,37 @@ static void GetEmployeeById(IRepository<Employee> employeeRepository)
     var employee = employeeRepository.GetById(2);
     Console.WriteLine($"Employee with Id 2: {employee.FirstName}");
 }
-static void AddEmployees(IRepository<Employee> employeeRepository)
+
+void AddEmployees(IRepository<Employee> employeeRepository)
 {
-    employeeRepository.Add(new Employee { FirstName = "Sam" });
-    employeeRepository.Add(new Employee { FirstName = "John" });
-    employeeRepository.Add(new Employee { FirstName = "Bilbo" });
+    var employees = new[]
+    {
+    new Employee { FirstName = "Sam" },
+    new Employee { FirstName = "John" },
+    new Employee { FirstName = "Bilbo" }
+    };
+    employeeRepository.AddBatch(employees);
     employeeRepository.Save();
 }
-static void AddOrganisations(IRepository<Organisation> organisationRepository)
+
+void AddOrganisations(IRepository<Organisation> organisationRepository)
 {
-    organisationRepository.Add(new Organisation { Name = "Viabl" });
-    organisationRepository.Add(new Organisation { Name = "Facebook" });
-    organisationRepository.Add(new Organisation { Name = "Google" });
-    organisationRepository.Save();
+    var organisations = new[]
+    {
+        new Organisation { Name = "Viabl" },
+        new Organisation { Name = "Facebook" },
+        new Organisation { Name = "Google" }
+    };
+    organisationRepository.AddBatch(organisations);
 }
 
-static void AddManagers(IWriteRepository<Manager> managerRepository)
+void AddManagers(IWriteRepository<Manager> managerRepository)
 {
-    managerRepository.Add(new Manager{ FirstName="Sara"});
-    managerRepository.Add(new Manager { FirstName = "Gavin" });
+    var managers = new[]
+    {
+    new Manager { FirstName = "Sara" },
+    new Manager { FirstName = "Gavin" },
+    };
+    managerRepository.AddBatch(managers);
     managerRepository.Save();
 }
