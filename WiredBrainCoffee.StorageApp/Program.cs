@@ -3,6 +3,12 @@ using WiredBrainCoffee.StorageApp.Entities;
 using WiredBrainCoffee.StorageApp.Repositories;
 
 var employeeRepository = new SqlRepository<Employee>(new StorageAppDbContext());
+employeeRepository.ItemAdded += EmployeeRepository_ItemAdded;
+
+void EmployeeRepository_ItemAdded(object sender, Employee e)
+{
+    Console.WriteLine($"Employee added => {e.FirstName}");
+}
 
 AddEmployees(employeeRepository);
 AddManagers(employeeRepository);
@@ -55,6 +61,14 @@ void AddOrganisations(IRepository<Organisation> organisationRepository)
 
 void AddManagers(IWriteRepository<Manager> managerRepository)
 {
+    var saraManager = new Manager { FirstName = "Sara" };
+    var saraManagerCopy = saraManager.Copy();
+    
+    if (saraManagerCopy != null)
+    {
+        saraManagerCopy.FirstName += "_Copy";
+        managerRepository.Add(saraManagerCopy);
+    }
     var managers = new[]
     {
     new Manager { FirstName = "Sara" },
